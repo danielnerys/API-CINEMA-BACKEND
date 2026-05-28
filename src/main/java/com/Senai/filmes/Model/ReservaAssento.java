@@ -1,0 +1,29 @@
+package com.Senai.filmes.Model;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.UUID;
+
+@Data
+@Entity
+@NoArgsConstructor
+@Table(name = "reservas_assentos")
+public class ReservaAssento {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "id")
+    private Reserva reserva;
+
+    @ManyToOne
+    @JoinColumn(name = "id")
+    private Assento assento;
+
+
+}

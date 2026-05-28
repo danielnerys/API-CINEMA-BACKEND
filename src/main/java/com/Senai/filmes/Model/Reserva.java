@@ -1,8 +1,10 @@
 package com.Senai.filmes.Model;
 
+import com.Senai.filmes.Model.Enums.StatusReserva;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Fetch;
 
@@ -13,6 +15,7 @@ import java.util.UUID;
 
 @Data
 @Entity
+@NoArgsConstructor
 @Table(name = "reservas")
 public class Reserva {
 
@@ -25,11 +28,29 @@ public class Reserva {
 
     @NotNull(message = "O campo não pode ser vazio")
     @Enumerated(EnumType.STRING)
-    private String status;
+    private StatusReserva status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id", nullable = false)
+    @NotNull(message = "O campo não pode ser vazio")
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
+
+    @NotNull
+    ManyToOne
+    @JoinColumn(name = 'sessao_id', nullable = false)
+    private Sessoes sessao;
+
+
+    @OneToMany(mappedBy = "reserva", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ReservaAssento> assentos = new ArrayList<>();
+
+
+
+
+
+
+
+
 
 
 }

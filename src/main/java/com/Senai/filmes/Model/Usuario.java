@@ -20,7 +20,7 @@ import java.util.UUID;
 public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private UUID usuario_id;
 
     @NotBlank(message = "O nome não pode ser vazio.")
     private String nome_usuario;
