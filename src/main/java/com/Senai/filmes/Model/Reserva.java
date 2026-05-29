@@ -2,6 +2,7 @@ package com.Senai.filmes.Model;
 
 import com.Senai.filmes.Model.Enums.StatusReserva;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,27 +31,18 @@ public class Reserva {
     @Enumerated(EnumType.STRING)
     private StatusReserva status;
 
-    @NotNull(message = "O campo não pode ser vazio")
+
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
-    @NotNull
-    ManyToOne
-    @JoinColumn(name = 'sessao_id', nullable = false)
-    private Sessoes sessao;
+
+    @ManyToOne
+    @JoinColumn(name = "sessao_id")
+    private Sessao sessao;
 
 
     @OneToMany(mappedBy = "reserva", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ReservaAssento> assentos = new ArrayList<>();
-
-
-
-
-
-
-
-
-
 
 }
