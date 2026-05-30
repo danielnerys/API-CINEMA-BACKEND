@@ -18,11 +18,11 @@ public class ReservaAssento {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "reserva_id")
     private Reserva reserva;
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "assento_id")
     private Assento assento;
 
 

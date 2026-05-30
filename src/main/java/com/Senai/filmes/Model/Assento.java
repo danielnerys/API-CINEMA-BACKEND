@@ -26,6 +26,6 @@ public class Assento {
 
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "sala_id")
     private Sala sala;
 }

@@ -12,5 +12,5 @@ public enum GeneroFilme {
     SUSPENSE,
     ESPORTE,
     CULT,
-    MUSICAL
+    MUSICAL;
 }
