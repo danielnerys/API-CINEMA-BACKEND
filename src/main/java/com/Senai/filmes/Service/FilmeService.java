@@ -29,7 +29,7 @@ public class FilmeService {
         return toResponse(filme);
     }
 
-    public FilmeResponse cadastrarFilme(FilmeRequest request){
+    public FilmeResponse cadastrarFilme(FilmeRequest request) {
         Filme filme = new Filme();
         filme.setTitulo_filme(request.titulo());
         filme.setDescricao_filme(request.descricao());
@@ -41,6 +41,22 @@ public class FilmeService {
 
     private FilmeResponse toResponse(Filme filme) {
         return new FilmeResponse(filme.getId(), filme.getTitulo_filme(), filme.getDescricao_filme(), filme.getUrlPoster(), filme.getGenero(), filme.getDuracaoMinutos());
+    }
+
+    public FilmeResponse atualizarFilme(UUID id, FilmeRequest filmerequest) {
+        Filme filme = filmeRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Nenhum filme encontrado"));
+        filme.setTitulo_filme(filmerequest.titulo());
+        filme.setDescricao_filme(filmerequest.descricao());
+        filme.setGenero(filmerequest.genero());
+        filme.setUrlPoster(filmerequest.urlPoster());
+        filme.setDuracaoMinutos(filme.getDuracaoMinutos());
+        return toResponse(filmeRepository.save(filme));
+    }
+
+    public void deletarFilme(UUID id) {
+        Filme filme = filmeRepository
+                .findById(id).orElseThrow(() -> new EntityNotFoundException("Nenhum filme encontrado"));
+        filmeRepository.delete(filme);
     }
 
 
