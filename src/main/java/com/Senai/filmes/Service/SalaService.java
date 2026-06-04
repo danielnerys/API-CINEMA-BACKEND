@@ -5,16 +5,30 @@ import com.Senai.filmes.DTO.Resquest.SalaRequest;
 import com.Senai.filmes.Model.Assento;
 import com.Senai.filmes.Model.Sala;
 import com.Senai.filmes.Repository.ISalaRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.expression.ExpressionException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class SalaService{
     @Autowired
     private ISalaRepository salaRepository;
+
+    public List<SalaResponse> listarTodos(){
+        return salaRepository.findAll().stream().map(this::toResponse).toList();
+    }
+
+    public SalaResponse buscarPorId(UUID id){
+        Sala sala = salaRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("nao tem essa pai"));
+        return toResponse(sala);
+    }
+
     public SalaResponse cadastrarSala(SalaRequest request) {
         Sala sala = new Sala();
         sala.setNome(request.nomeSala());
@@ -40,6 +54,21 @@ public class SalaService{
         }
         return assentos;
     }
+
+    public void deletar(UUID id){
+        Sala sala = salaRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("nao tem essa pai"));
+        salaRepository.deleteById(id);
+    }
+
+//    public void atualizarSala(UUID id){
+//        Sala sala = salaRepository.findById(id)
+//                .orElseThrow(() -> new EntityNotFoundException("Sala não existe"));
+//
+//        salaRepository.
+//    }
+
+
 
     private SalaResponse toResponse(Sala sala) {
         return new SalaResponse(
