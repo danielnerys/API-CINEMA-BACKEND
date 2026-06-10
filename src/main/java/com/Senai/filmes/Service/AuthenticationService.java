@@ -3,6 +3,7 @@ package com.Senai.filmes.Service;
 import com.Senai.filmes.Repository.IUsuarioRepository;
 import com.Senai.filmes.Security.JwtUtil;
 
+import com.Senai.filmes.Security.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,9 +24,11 @@ public class AuthenticationService {
     private JwtUtil jwtUtil;
 
     @Autowired
-    private UserDetailsServiceIml userDetailsServiceIml;
+    private UserDetailsServiceImpl userDetailsServiceIml;
 
 //    cadastrar/criar novo usuario
+
+
 
 
 
