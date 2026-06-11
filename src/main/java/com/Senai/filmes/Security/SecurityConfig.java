@@ -35,7 +35,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()            // login/cadastro: público
                         .requestMatchers(HttpMethod.GET, "/api/filmes/**").permitAll()    // GET filmes: público
-                        .requestMatchers(HttpMethod.GET, "/api/sessoes/**").permitAll()   // GET sessoes: público
+                        .requestMatchers(HttpMethod.GET, "/api/salas/**").permitAll()   // GET sessoes: público
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll() // docs: público
                         .anyRequest().authenticated()  // todo o resto exige token
                 )

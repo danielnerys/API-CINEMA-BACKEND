@@ -23,10 +23,10 @@ public class Usuario {
     private UUID usuario_id;
 
     @NotBlank(message = "O nome não pode ser vazio.")
-    private String nome_usuario;
+    private String nomeUsuario;
     @NotBlank(message = "Email é obrigatório")
-    @Column(unique = true)
-    private String email_usuario;
+    @Column(unique = true, name = "email_usuario")
+    private String email;
 
     @NotBlank(message = "A SENHA É OBRIGATÓRIA")
     private String senha;

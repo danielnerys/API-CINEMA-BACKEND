@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class SalaController {
     @PostMapping
 
     @Operation(summary = "Cadastrar sala", description = "Rota para cadastrar sala")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<SalaResponse> cadastrarSala(@RequestBody SalaRequest salarequest) {
         return new ResponseEntity<>(salaService.cadastrarSala(salarequest), HttpStatus.CREATED);
     }
@@ -43,11 +45,13 @@ public class SalaController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Listar sala por ID")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<SalaResponse> buscarPorID(@PathVariable UUID id) {
         return new ResponseEntity<>(salaService.buscarPorId(id), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deletarSala(@PathVariable UUID id){
        salaService.deletar(id);
        return new ResponseEntity<>(HttpStatus.OK);

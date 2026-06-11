@@ -8,5 +8,5 @@ import java.util.List;
 import java.util.UUID;
 
 public interface ISalaRepository extends JpaRepository<Sala, UUID> {
-   List<Sala> findAllBy(UUID id);
+   List<Sala> findAllById(UUID id);
 }
