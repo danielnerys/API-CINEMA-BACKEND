@@ -18,12 +18,15 @@ import java.util.UUID;
 @NoArgsConstructor
 @Table(name="usuarios")
 public class Usuario {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID usuario_id;
+    @Column(name = "usuario_id")
+    private UUID id;
 
     @NotBlank(message = "O nome não pode ser vazio.")
     private String nomeUsuario;
+
     @NotBlank(message = "Email é obrigatório")
     @Column(unique = true, name = "email_usuario")
     private String email;
@@ -37,7 +40,4 @@ public class Usuario {
 
     @CreationTimestamp
     private LocalDateTime criado_em;
-
-
-
 }

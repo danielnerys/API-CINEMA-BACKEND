@@ -10,6 +10,6 @@ import java.util.UUID;
 
 @Repository
 public interface IFilmeRepository extends JpaRepository<Filme, UUID> {
-    List<Filme> findAllBy(UUID id);
+
 
 }
