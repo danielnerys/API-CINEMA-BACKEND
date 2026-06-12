@@ -10,11 +10,14 @@ import com.Senai.filmes.Security.JwtUtil;
 
 import com.Senai.filmes.Security.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class AuthenticationService {
@@ -57,20 +60,23 @@ public class AuthenticationService {
 
     //login
     public AuthResponse login(LoginRequest loginRequest) {
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            loginRequest.email(),
+                            loginRequest.senha()
+                    )
+            );
+        } catch (BadCredentialsException e) {
+            // Isso vai capturar o erro e retornar 401 (Unauthorized) com uma mensagem clara!
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "E-mail ou senha inválidos.");
+        }
 
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginRequest.email(),
-                        loginRequest.senha()
-                )
-        );
-
+        // Se passou pela autenticação, busca o usuário no banco tranquilamente
         Usuario usuario = usuarioRepository.findByEmail(loginRequest.email())
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
 
-        UserDetails userDetails =
-                userDetailsServiceIml.loadUserByUsername(loginRequest.email());
-
+        UserDetails userDetails = userDetailsServiceIml.loadUserByUsername(loginRequest.email());
         String token = jwtUtil.gerarToken(userDetails);
 
         return new AuthResponse(

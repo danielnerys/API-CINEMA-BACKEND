@@ -28,19 +28,29 @@ public class DataInitialiazer implements CommandLineRunner {
 
 
     @Override
-    public void run(String... args){
-        if(usuarioRepository.existsByEmail(adminEmail)){
-            return;
-        }
-        Usuario usuarioAdmin = new Usuario();
-        usuarioAdmin.setNomeUsuario("DanielAdmin");
-        usuarioAdmin.setEmail(adminEmail);
-        usuarioAdmin.setSenha(passwordEncoder.encode(adminSenha));
-        usuarioAdmin.setCargo(CargoUsuario.ADMIN);
+    public void run(String... args) {
+        // 1. Tenta buscar o admin existente pelo e-mail
+        // (Certifique-se de que seu IUsuarioRepository tem o método findByEmail)
+        Usuario usuarioAdmin = usuarioRepository.findByEmail(adminEmail)
+                .orElse(new Usuario());
 
+        // 2. Se for um usuário novo (id é nulo), preenche os dados padrão
+        if (usuarioAdmin.getId() == null) {
+            usuarioAdmin.setNomeUsuario("DanielAdmin");
+            usuarioAdmin.setEmail(adminEmail);
+            usuarioAdmin.setCargo(CargoUsuario.ADMIN);
+            System.out.println(">>>> USUÁRIO ADMIN NÃO ENCONTRADO. CRIANDO NOVO... <<<<");
+        } else {
+            System.out.println(">>>> ADMIN ENCONTRADO NO BANCO! FORÇANDO ATUALIZAÇÃO DA SENHA PARA BCRYPT... <<<<");
+        }
+
+        // 3. Criptografa a senha (isso vai sobrescrever a senha em texto puro antiga!)
+        usuarioAdmin.setSenha(passwordEncoder.encode(adminSenha));
+
+        // 4. Salva ou Atualiza no banco de dados
         usuarioRepository.save(usuarioAdmin);
 
-        System.out.println(">>>>>>>> USUARIO ADMIN CRIADO: " + adminEmail + " <<<<<<<<<<<");
+        System.out.println(">>>>>>>> USUARIO ADMIN CONFIGURADO COM SUCESSO: " + adminEmail + " <<<<<<<<<<<");
     }
 
 

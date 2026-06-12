@@ -19,10 +19,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Usuario usuario = usuarioRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("Usuario não encontrado"));
+        Usuario usuario = usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado com o e-mail: " + email));
 
-        return new User(usuario.getNomeUsuario(), usuario.getEmail(),
-                List.of(new SimpleGrantedAuthority("ROLE_" + usuario.getCargo().name())));
-
+        // Correção dos parâmetros:
+        // 1º: O identificador de login (usuario.getEmail())
+        // 2º: A senha criptografada real vinda do banco (usuario.getSenha())
+        return new User(
+                usuario.getEmail(),
+                usuario.getSenha(),
+                List.of(new SimpleGrantedAuthority("ROLE_" + usuario.getCargo().name()))
+        );
     }
 }

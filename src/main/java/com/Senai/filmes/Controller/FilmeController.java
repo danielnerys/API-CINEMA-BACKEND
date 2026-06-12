@@ -5,6 +5,7 @@ import com.Senai.filmes.DTO.Resquest.FilmeRequest;
 import com.Senai.filmes.Model.Filme;
 import com.Senai.filmes.Service.FilmeService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotNull;
 import jdk.jfr.Description;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import java.util.UUID;
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/api/filmes")
+@Tag(name = "Filmes", description = "Endpoint para gerenciar filmes.")
 public class FilmeController {
     @Autowired
     private FilmeService filmeService;
